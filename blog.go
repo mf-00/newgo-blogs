@@ -29,6 +29,7 @@ import (
 	"github.com/gorilla/schema"
 	"github.com/gorilla/securecookie"
 	"github.com/gorilla/sessions"
+	"github.com/justinas/alice"
 	"github.com/justinas/nosurf"
 )
 
@@ -138,6 +139,7 @@ func main() {
 	// Routes
 	gets := mux.Methods("GET").Subrouter()
 	posts := mux.Methods("POST").Subrouter()
+	heads := mux.Methods("HEAD").Subrouter()
 
 	mux.PathPrefix("/auth").Handler(ab.NewRouter())
 
@@ -154,13 +156,15 @@ func main() {
 	// destroy link using javascript atm.
 	gets.HandleFunc("/blogs/{id}/destroy", destroy)
 
+	heads.HandleFunc("/", _defaultHandler)
+
 	mux.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		io.WriteString(w, "Not found")
 	})
 
 	// Set up our middleware chain
-	//stack := alice.New(logger, nosurfing, ab.ExpireMiddleware).Then(mux)
+	stack := alice.New(logger, nosurfing, ab.ExpireMiddleware).Then(mux)
 
 	// Start the server
 	/*port := os.Getenv("PORT")
@@ -169,8 +173,8 @@ func main() {
 	}*/
 
 	port := "8888"
-	http.HandleFunc("/", _defaultHandler)
-	http.ListenAndServe(":"+port, nil)
+	//http.HandleFunc("/", _defaultHandler)
+	http.ListenAndServe(":"+port, stack)
 }
 
 func layoutData(w http.ResponseWriter, r *http.Request) authboss.HTMLData {
