@@ -169,7 +169,8 @@ func main() {
 		port = "3000"
 	}*/
 	port := "8888"
-	log.Println(http.ListenAndServe("localhost:"+port, stack))
+	http.HandleFunc("/", defaultHandler)
+	log.Println(http.ListenAndServe("localhost:"+port, nil))
 }
 
 func layoutData(w http.ResponseWriter, r *http.Request) authboss.HTMLData {
