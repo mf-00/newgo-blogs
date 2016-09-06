@@ -4,7 +4,6 @@ import (
 	"encoding/base64"
 	"fmt"
 	"html/template"
-	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -29,7 +28,6 @@ import (
 	"github.com/gorilla/schema"
 	"github.com/gorilla/securecookie"
 	"github.com/gorilla/sessions"
-	"github.com/justinas/alice"
 	"github.com/justinas/nosurf"
 )
 
@@ -104,7 +102,7 @@ func setupAuthboss() {
 	}
 }
 
-func main0() {
+func main() {
 	// Initialize Sessions and Cookies
 	// Typically gorilla securecookie and sessions packages require
 	// highly random secret keys that are not divulged to the public.
@@ -134,7 +132,7 @@ func main0() {
 
 	// Set up our router
 	schemaDec.IgnoreUnknownKeys(true)
-	mux := mux.NewRouter()
+	/*mux := mux.NewRouter()
 
 	// Routes
 	gets := mux.Methods("GET").Subrouter()
@@ -145,8 +143,8 @@ func main0() {
 	gets.Handle("/blogs/new", authProtect(newblog))
 	gets.Handle("/blogs/{id}/edit", authProtect(edit))
 	gets.HandleFunc("/blogs", index)
-	//gets.HandleFunc("/", index)
-	gets.HandleFunc("/", defaultHandler)
+	gets.HandleFunc("/", index)
+	//gets.HandleFunc("/", defaultHandler)
 
 	posts.Handle("/blogs/{id}/edit", authProtect(update))
 	posts.Handle("/blogs/new", authProtect(create))
@@ -168,8 +166,9 @@ func main0() {
 	if len(port) == 0 {
 		port = "3000"
 	}*/
+
 	port := "8888"
-	//http.HandleFunc("/", defaultHandler)
+	http.HandleFunc("/", _defaultHandler)
 	log.Println(http.ListenAndServe("localhost:"+port, stack))
 }
 
