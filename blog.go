@@ -4,7 +4,6 @@ import (
 	"encoding/base64"
 	"fmt"
 	"html/template"
-	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -29,7 +28,6 @@ import (
 	"github.com/gorilla/schema"
 	"github.com/gorilla/securecookie"
 	"github.com/gorilla/sessions"
-	"github.com/justinas/alice"
 	"github.com/justinas/nosurf"
 )
 
@@ -134,7 +132,7 @@ func main() {
 
 	// Set up our router
 	schemaDec.IgnoreUnknownKeys(true)
-	mux := mux.NewRouter()
+	/*mux := mux.NewRouter()
 
 	// Routes
 	gets := mux.Methods("GET").Subrouter()
@@ -158,10 +156,10 @@ func main() {
 	mux.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		io.WriteString(w, "Not found")
-	})
+	})*/
 
 	// Set up our middleware chain
-	stack := alice.New(logger, nosurfing, ab.ExpireMiddleware).Then(mux)
+	//stack := alice.New(logger, nosurfing, ab.ExpireMiddleware).Then(mux)
 
 	// Start the server
 	/*port := os.Getenv("PORT")
@@ -171,7 +169,7 @@ func main() {
 
 	port := "8888"
 	http.HandleFunc("/", _defaultHandler)
-	http.ListenAndServe(":"+port, stack)
+	http.ListenAndServe(":"+port, nil)
 }
 
 func layoutData(w http.ResponseWriter, r *http.Request) authboss.HTMLData {
