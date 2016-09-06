@@ -29,6 +29,7 @@ import (
 	"github.com/gorilla/schema"
 	"github.com/gorilla/securecookie"
 	"github.com/gorilla/sessions"
+	"github.com/justinas/alice"
 	"github.com/justinas/nosurf"
 )
 
@@ -103,7 +104,7 @@ func setupAuthboss() {
 	}
 }
 
-func main() {
+func main0() {
 	// Initialize Sessions and Cookies
 	// Typically gorilla securecookie and sessions packages require
 	// highly random secret keys that are not divulged to the public.
@@ -160,7 +161,7 @@ func main() {
 	})
 
 	// Set up our middleware chain
-	//stack := alice.New(logger, nosurfing, ab.ExpireMiddleware).Then(mux)
+	stack := alice.New(logger, nosurfing, ab.ExpireMiddleware).Then(mux)
 
 	// Start the server
 	/*port := os.Getenv("PORT")
@@ -168,8 +169,8 @@ func main() {
 		port = "3000"
 	}*/
 	port := "8888"
-	http.HandleFunc("/", defaultHandler)
-	log.Println(http.ListenAndServe("localhost:"+port, nil))
+	//http.HandleFunc("/", defaultHandler)
+	log.Println(http.ListenAndServe("localhost:"+port, stack))
 }
 
 func layoutData(w http.ResponseWriter, r *http.Request) authboss.HTMLData {
