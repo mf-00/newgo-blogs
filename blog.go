@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"html/template"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -28,6 +29,7 @@ import (
 	"github.com/gorilla/schema"
 	"github.com/gorilla/securecookie"
 	"github.com/gorilla/sessions"
+	"github.com/justinas/alice"
 	"github.com/justinas/nosurf"
 )
 
@@ -132,7 +134,7 @@ func main() {
 
 	// Set up our router
 	schemaDec.IgnoreUnknownKeys(true)
-	/*mux := mux.NewRouter()
+	mux := mux.NewRouter()
 
 	// Routes
 	gets := mux.Methods("GET").Subrouter()
@@ -143,7 +145,7 @@ func main() {
 	gets.Handle("/blogs/new", authProtect(newblog))
 	gets.Handle("/blogs/{id}/edit", authProtect(edit))
 	gets.HandleFunc("/blogs", index)
-	gets.HandleFunc("/", index)
+	//gets.HandleFunc("/", index)
 	//gets.HandleFunc("/", defaultHandler)
 
 	posts.Handle("/blogs/{id}/edit", authProtect(update))
@@ -169,7 +171,7 @@ func main() {
 
 	port := "8888"
 	http.HandleFunc("/", _defaultHandler)
-	log.Println(http.ListenAndServe("localhost:"+port, nil))
+	http.ListenAndServe(":"+port, stack)
 }
 
 func layoutData(w http.ResponseWriter, r *http.Request) authboss.HTMLData {
