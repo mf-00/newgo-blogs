@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"html/template"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -132,7 +133,7 @@ func main() {
 
 	// Set up our router
 	schemaDec.IgnoreUnknownKeys(true)
-	/*mux := mux.NewRouter()
+	mux := mux.NewRouter()
 
 	// Routes
 	gets := mux.Methods("GET").Subrouter()
@@ -156,7 +157,7 @@ func main() {
 	mux.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		io.WriteString(w, "Not found")
-	})*/
+	})
 
 	// Set up our middleware chain
 	//stack := alice.New(logger, nosurfing, ab.ExpireMiddleware).Then(mux)
