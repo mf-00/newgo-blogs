@@ -139,7 +139,7 @@ func main() {
 	// Routes
 	gets := mux.Methods("GET").Subrouter()
 	posts := mux.Methods("POST").Subrouter()
-	heads := mux.Methods("HEAD").Subrouter()
+	mux.HandleFunc("/", _defaultHandler)
 
 	mux.PathPrefix("/auth").Handler(ab.NewRouter())
 
@@ -147,7 +147,7 @@ func main() {
 	gets.Handle("/blogs/{id}/edit", authProtect(edit))
 	gets.HandleFunc("/blogs", index)
 	//gets.HandleFunc("/", index)
-	//gets.HandleFunc("/", defaultHandler)
+	//gets.HandleFunc("/", _defaultHandler)
 
 	posts.Handle("/blogs/{id}/edit", authProtect(update))
 	posts.Handle("/blogs/new", authProtect(create))
@@ -156,7 +156,7 @@ func main() {
 	// destroy link using javascript atm.
 	gets.HandleFunc("/blogs/{id}/destroy", destroy)
 
-	heads.HandleFunc("/", _defaultHandler)
+	//heads.HandleFunc("/", _defaultHandler)
 
 	mux.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
@@ -199,7 +199,7 @@ func index(w http.ResponseWriter, r *http.Request) {
 }
 
 func _defaultHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "<h1>Hello from Cisco Shipped!</h1>\n")
+	fmt.Fprintf(w, "<h1>Hello from Cisco Shipped testing!</h1>\n")
 }
 
 func newblog(w http.ResponseWriter, r *http.Request) {
